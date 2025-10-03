@@ -27,8 +27,8 @@ VHOLE_RADIUS = 1.5;
 VHOLE_HEIGHT = WALL_WIDTH+2*(VHOLE_OVERLAP);
 
 
-PI_PEG_HEIGHT = WALL_WIDTH+5;
-PI_PEGHOLE_HEIGHT = WALL_WIDTH+5;
+PI_PEG_HEIGHT = 5;
+PI_PEGHOLE_HEIGHT = 7;
 PI_PEG_RADIUS = 1.1;
 PI_PEGHOLE_INNER_RADIUS = 1.3;
 PI_PEGHOLE_OUTER_RADIUS = 2.2;
@@ -53,7 +53,8 @@ BME280_HOLE_CENTERS_SHORT_AXIS = 11.80;
 BME280_HOLE_RADIUS = 0.75; 
 BME280_HOLE_PERIMETER = 1.25;
 
-BME280_PEG_HEIGHT = WALL_WIDTH+4;
+BME280_PEG_HEIGHT = 4;
+BME280_PEGHOLE_HEIGHT = 8;
 BME280_PEG_RADIUS = 0.80;
 BME280_PEGHOLE_INNER_RADIUS = 0.82;
 BME280_PEGHOLE_OUTER_RADIUS = 1.5;
@@ -63,7 +64,6 @@ BME280_INNER_LENGTH = BME280_HOLE_CENTERS_LONG_AXIS + 2*BME280_HOLE_RADIUS + 2*B
 BME280_OUTER_LENGTH = BME280_INNER_LENGTH + 2*WALL_WIDTH;
 BME280_INNER_WIDTH = BME280_HOLE_CENTERS_SHORT_AXIS + 2*BME280_HOLE_RADIUS + 2*BME280_HOLE_PERIMETER + 2*BME280_GAP_WIDTH_SHORT_AXIS;
 BME280_OUTER_WIDTH = BME280_INNER_WIDTH + 2*WALL_WIDTH;
-
 
 BME280_OUTER_CORNER_RADIUS = 4; 
 BME280_INNER_CORNER_RADIUS = 3; 
@@ -217,7 +217,7 @@ module pi_bottom_box_with_pegs_and_cutouts() {
         pi_bottom_box_with_pegs();
       
         // SD card cutout 
-        translate([-(0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH),-0.05*PI_OUTER_WIDTH,BOTTOM_WALL_HEIGHT]) {
+        translate([-(0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH),0.05*PI_OUTER_WIDTH,BOTTOM_WALL_HEIGHT]) {
             rotate([0,0,90]) {
                 cube([0.35*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
             }
@@ -226,19 +226,19 @@ module pi_bottom_box_with_pegs_and_cutouts() {
         // Mini HDMI cutout 
         hdmi_shift = 0.20*PI_OUTER_LENGTH;
         translate([-(0.5*PI_OUTER_LENGTH-hdmi_shift),-0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)-0.1,BOTTOM_WALL_HEIGHT]) {
-            cube([0.25*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
+            cube([0.35*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
         }
 
         // Micro USB 1 cutout 
         usb1_shift = 0.20*PI_OUTER_LENGTH;
         translate([0.5*PI_OUTER_LENGTH-usb1_shift,-0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)-0.1,BOTTOM_WALL_HEIGHT]) {
-            cube([0.20*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
+            cube([0.30*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
         }
 
         // Micro USB 2 cutout 
-        usb2_shift = 0.37*PI_OUTER_LENGTH;
+        usb2_shift = 0.40*PI_OUTER_LENGTH;
         translate([0.5*PI_OUTER_LENGTH-usb2_shift,-0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)-0.1,BOTTOM_WALL_HEIGHT]) {
-            cube([0.20*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
+            cube([0.30*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
         }
     }
 }
@@ -361,17 +361,6 @@ module pi_top_box() {
             roundedBox(size=[PI_INNER_LENGTH,PI_INNER_WIDTH,BOTTOM_WALL_HEIGHT],radius=PI_INNER_CORNER_RADIUS,sidesonly=true);
         }  
 
-        // Make some holes for ventilation
-        //for (dy=[-(PI_INNER_WIDTH/2-3*VHOLE_RADIUS):2.5*VHOLE_RADIUS:PI_INNER_WIDTH/2-2*VHOLE_RADIUS]) {
-        //    for (dx=[-(PI_INNER_LENGTH/2-3*VHOLE_RADIUS):2.5*VHOLE_RADIUS:PI_INNER_LENGTH/2-2*VHOLE_RADIUS]) {
-        //        translate([dx,dy,-VHOLE_OVERLAP]) {
-        //            rotate([0,0,30]) {
-        //                hexagonal_prism(VHOLE_HEIGHT,VHOLE_RADIUS);
-        //            }
-        //        }
-        //    }
-        // }
-
         for (dx=[-(PI_INNER_LENGTH/2-3*VHOLE_RADIUS):2.5*VHOLE_RADIUS:PI_INNER_LENGTH/2-2*VHOLE_RADIUS]) {
             translate([dx,0,-VHOLE_OVERLAP]) {
                 rotate([0,0,30]) {
@@ -404,13 +393,13 @@ module pi_top_box() {
             }
         }
 
-        for (dx=[-(PI_INNER_LENGTH/2-3*VHOLE_RADIUS):2.5*VHOLE_RADIUS:PI_INNER_LENGTH/2-2*VHOLE_RADIUS]) {
-            translate([dx,-4*VHOLE_RADIUS,-VHOLE_OVERLAP]) {
-                rotate([0,0,30]) {
-                    hexagonal_prism(VHOLE_HEIGHT,VHOLE_RADIUS);
-                }
-            }
-        }
+        //for (dx=[-(PI_INNER_LENGTH/2-3*VHOLE_RADIUS):2.5*VHOLE_RADIUS:PI_INNER_LENGTH/2-2*VHOLE_RADIUS]) {
+        //    translate([dx,-4*VHOLE_RADIUS,-VHOLE_OVERLAP]) {
+        //        rotate([0,0,30]) {
+        //            hexagonal_prism(VHOLE_HEIGHT,VHOLE_RADIUS);
+        //        }
+        //    }
+        //}
    
     } // difference
 }
@@ -419,7 +408,7 @@ module pi_top_box() {
 module pi_top_box_with_pegholes() {
     union() {
         translate([0,0,0.5*BOTTOM_WALL_HEIGHT]) {
-            pi_bottom_box();
+            pi_top_box();
         }
 
         delta_x = 0.5 * PI_HOLE_CENTERS_LONG_AXIS;
@@ -445,7 +434,7 @@ module pi_top_box_with_pegholes_and_cutouts() {
         pi_top_box_with_pegholes();
       
         // SD card cutout 
-        translate([-(0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH),0.05*PI_OUTER_WIDTH,TOP_WALL_HEIGHT]) {
+        translate([-(0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH),-0.05*PI_OUTER_WIDTH,TOP_WALL_HEIGHT]) {
             rotate([0,0,90]) {
                 cube([0.35*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*TOP_WALL_HEIGHT+0.2],center=true);
             }
@@ -453,20 +442,20 @@ module pi_top_box_with_pegholes_and_cutouts() {
          
         // Mini HDMI cutout 
         hdmi_shift = 0.20*PI_OUTER_LENGTH;
-        translate([-(0.5*PI_OUTER_LENGTH-hdmi_shift),0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)+0.1,TOP_WALL_HEIGHT]) {
-            cube([0.25*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
+        translate([-(0.5*PI_OUTER_LENGTH-hdmi_shift+1),0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)+0.1,TOP_WALL_HEIGHT]) {
+            cube([0.40*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
         }
 
         // Micro USB 1 cutout 
         usb1_shift = 0.20*PI_OUTER_LENGTH;
         translate([0.5*PI_OUTER_LENGTH-usb1_shift,0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)+0.1,TOP_WALL_HEIGHT]) {
-            cube([0.20*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
+            cube([0.30*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
         }
 
         // Micro USB 2 cutout 
-        usb2_shift = 0.37*PI_OUTER_LENGTH;
+        usb2_shift = 0.40*PI_OUTER_LENGTH;
         translate([0.5*PI_OUTER_LENGTH-usb2_shift,0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)+0.1,BOTTOM_WALL_HEIGHT]) {
-            cube([0.20*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
+            cube([0.30*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
         }
     }
 }
@@ -477,7 +466,7 @@ module pi_top_box_with_header_cutout() {
         pi_top_box_with_pegholes_and_cutouts();
 
         translate([0,-0.5*PI_HOLE_CENTERS_SHORT_AXIS,BOTTOM_WALL_HEIGHT-(0.5*BOTTOM_WALL_HEIGHT)]) {
-            cube([PI_HOLE_CENTERS_LONG_AXIS-8,5,BOTTOM_WALL_HEIGHT+0.2],center=true); 
+            cube([PI_HOLE_CENTERS_LONG_AXIS-6,7,BOTTOM_WALL_HEIGHT+0.2],center=true); 
         }
     }
 }
@@ -548,16 +537,16 @@ module bme280_top_box_with_pegholes() {
         delta_y = 0.5 * BME280_HOLE_CENTERS_SHORT_AXIS;
 
         translate([-delta_x,-delta_y,0]) {
-            standoff_with_peghole(STANDOFF_HEIGHT,STANDOFF_RADIUS,BME280_PEG_HEIGHT,BME280_PEGHOLE_OUTER_RADIUS,BME280_PEGHOLE_INNER_RADIUS);
+            standoff_with_peghole(STANDOFF_HEIGHT,STANDOFF_RADIUS,BME280_PEGHOLE_HEIGHT,BME280_PEGHOLE_OUTER_RADIUS,BME280_PEGHOLE_INNER_RADIUS);
         }     
         translate([delta_x,-delta_y,0]) {
-            standoff_with_peghole(STANDOFF_HEIGHT,STANDOFF_RADIUS,BME280_PEG_HEIGHT,BME280_PEGHOLE_OUTER_RADIUS,BME280_PEGHOLE_INNER_RADIUS);
+            standoff_with_peghole(STANDOFF_HEIGHT,STANDOFF_RADIUS,BME280_PEGHOLE_HEIGHT,BME280_PEGHOLE_OUTER_RADIUS,BME280_PEGHOLE_INNER_RADIUS);
         } 
         translate([-delta_x,delta_y,0]) {
-            standoff_with_peghole(STANDOFF_HEIGHT,STANDOFF_RADIUS,BME280_PEG_HEIGHT,BME280_PEGHOLE_OUTER_RADIUS,BME280_PEGHOLE_INNER_RADIUS);
+            standoff_with_peghole(STANDOFF_HEIGHT,STANDOFF_RADIUS,BME280_PEGHOLE_HEIGHT,BME280_PEGHOLE_OUTER_RADIUS,BME280_PEGHOLE_INNER_RADIUS);
         } 
         translate([delta_x,delta_y,0]) {
-            standoff_with_peghole(STANDOFF_HEIGHT,STANDOFF_RADIUS,BME280_PEG_HEIGHT,BME280_PEGHOLE_OUTER_RADIUS,BME280_PEGHOLE_INNER_RADIUS);
+            standoff_with_peghole(STANDOFF_HEIGHT,STANDOFF_RADIUS,BME280_PEGHOLE_HEIGHT,BME280_PEGHOLE_OUTER_RADIUS,BME280_PEGHOLE_INNER_RADIUS);
         } 
     }
 }
@@ -586,7 +575,7 @@ module bme280_top_box_with_header_cutout() {
         bme280_top_box_with_pegholes_and_cutouts();
 
         translate([0,-0.5*BME280_HOLE_CENTERS_SHORT_AXIS-1,BOTTOM_WALL_HEIGHT-(0.5*BOTTOM_WALL_HEIGHT)]) {
-            cube([BME280_HOLE_CENTERS_LONG_AXIS-6,2,BOTTOM_WALL_HEIGHT+0.2],center=true); 
+            cube([BME280_HOLE_CENTERS_LONG_AXIS-4.5,4,BOTTOM_WALL_HEIGHT+0.2],center=true); 
         }
     }
 }
