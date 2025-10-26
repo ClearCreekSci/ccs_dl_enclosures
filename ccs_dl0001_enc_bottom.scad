@@ -19,7 +19,7 @@
 use <MCAD/boxes.scad>
 use <MCAD/regular_shapes.scad>
 
-include <ccs_dl0001_enc_bottom_common.scad
+include <ccs_dl0001_enc_bottom_common.scad>
 $fa=1;
 $fs=0.4;
 
