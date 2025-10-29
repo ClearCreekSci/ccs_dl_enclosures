@@ -1,5 +1,5 @@
 # Introduction 
-This is a collection of [OpenSCAD](https://openscad.org/) source files, modelling various enclosures for the Clear Creek Scientific Weather Data logger. The models are split into a bottom half and a top half. There are multiple variations of the bottom and top halves, each offering different features. You should choose one each of the bottom and half files to produce the enclosure you want. See the list below for a description of each file:
+This is a collection of [OpenSCAD](https://openscad.org/) source files, modelling various enclosures for the Clear Creek Scientific Weather Data logger. The models are split into a bottom half and a top half. There are multiple variations of the bottom and top halves, each offering different features. You should choose one each of the bottom and top files to produce the enclosure you want. See the list below for a description of each file:
 
 ## Version 0001 (Enclosure for Raspberry Pi Zero and Adafruit BME280 sensor)
 
