@@ -1,5 +1,4 @@
-This is a collection of source files for [OpenSCAD](https://openscad.org/), modelling various enclosures for data loggers. See the list below for more details:
+This is a collection [OpenSCAD](https://openscad.org/) source files, modelling various enclosures for data loggers.
 
-* ccs_dlenc_1.scad: Combined enclosure for a Raspberry Pi Zero and an Adafruit BME280 temperature, humidity and pressure sensor.
 
   

@@ -68,24 +68,24 @@ module pi_bottom_box_with_pegs_and_cutouts() {
         }
          
         // Mini HDMI cutout 
-        hdmi_shift = 0.20*PI_OUTER_LENGTH;
-        translate([-(0.5*PI_OUTER_LENGTH-hdmi_shift),-0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)-0.1,BOTTOM_WALL_HEIGHT]) {
+        hdmi_shift = 0.785*PI_OUTER_LENGTH;
+        translate([0.5*PI_OUTER_LENGTH-hdmi_shift,-0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)-0.1,BOTTOM_WALL_HEIGHT]) {
             cube([0.35*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
         }
 
-        // Micro USB 1 cutout 
-        usb1_shift = 0.20*PI_OUTER_LENGTH;
-        translate([0.5*PI_OUTER_LENGTH-usb1_shift,-0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)-0.1,BOTTOM_WALL_HEIGHT]) {
-            cube([0.30*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
-        }
-
         // Micro USB 2 cutout 
-        usb2_shift = 0.40*PI_OUTER_LENGTH;
+        usb2_shift = 0.37*PI_OUTER_LENGTH;
         translate([0.5*PI_OUTER_LENGTH-usb2_shift,-0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)-0.1,BOTTOM_WALL_HEIGHT]) {
-            cube([0.30*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
+            cube([0.25*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
         }
 
-        // Make some holes for ventilation
+        // Micro USB 1 cutout 
+        usb1_shift = 0.19*PI_OUTER_LENGTH;
+        translate([0.5*PI_OUTER_LENGTH-usb1_shift,-0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)-0.1,BOTTOM_WALL_HEIGHT]) {
+            cube([0.25*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
+        }
+
+        // Make some holes for venilation
         for (dx=[-(PI_INNER_LENGTH/2-3*VHOLE_RADIUS):2.5*VHOLE_RADIUS:PI_INNER_LENGTH/2-2*VHOLE_RADIUS]) {
             translate([dx,0,-VHOLE_OVERLAP]) {
                 rotate([0,0,30]) {
@@ -109,7 +109,7 @@ module pi_bottom_box_with_pegs_and_cutouts() {
                 }
             }
         }
-   
+
         for (dx=[-(PI_INNER_LENGTH/2-4*VHOLE_RADIUS):2.5*VHOLE_RADIUS:PI_INNER_LENGTH/2-3*VHOLE_RADIUS]) {
             translate([dx,-2*VHOLE_RADIUS,-VHOLE_OVERLAP]) {
                 rotate([0,0,-30]) {
@@ -208,6 +208,8 @@ module bme280_bottom_box_with_pegs_and_cutouts() {
                 }
             }
         }
+
+
     }
 }
 

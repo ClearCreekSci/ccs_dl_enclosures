@@ -24,35 +24,10 @@ $fa=1;
 $fs=0.4;
 
 
-module pi_top_box_with_pegholes_and_cutouts() {
+module pi_top_box_with_ventilation() {
     difference() {
-        pi_top_box_with_pegholes();
+        pi_top_box_with_pegholes_and_cutouts();
       
-        // SD card cutout 
-        translate([-(0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH),-0.05*PI_OUTER_WIDTH,TOP_WALL_HEIGHT]) {
-            rotate([0,0,90]) {
-                cube([0.35*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*TOP_WALL_HEIGHT+0.2],center=true);
-            }
-        }
-         
-        // Mini HDMI cutout 
-        hdmi_shift = 0.20*PI_OUTER_LENGTH;
-        translate([-(0.5*PI_OUTER_LENGTH-hdmi_shift+1),0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)+0.1,TOP_WALL_HEIGHT]) {
-            cube([0.40*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
-        }
-
-        // Micro USB 1 cutout 
-        usb1_shift = 0.20*PI_OUTER_LENGTH;
-        translate([0.5*PI_OUTER_LENGTH-usb1_shift,0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)+0.1,TOP_WALL_HEIGHT]) {
-            cube([0.30*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
-        }
-
-        // Micro USB 2 cutout 
-        usb2_shift = 0.40*PI_OUTER_LENGTH;
-        translate([0.5*PI_OUTER_LENGTH-usb2_shift,0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)+0.1,BOTTOM_WALL_HEIGHT]) {
-            cube([0.30*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
-        }
-
         // Ventilation holes
         for (dx=[-(PI_INNER_LENGTH/2-3*VHOLE_RADIUS):2.5*VHOLE_RADIUS:PI_INNER_LENGTH/2-2*VHOLE_RADIUS]) {
             translate([dx,0,-VHOLE_OVERLAP]) {
@@ -99,7 +74,7 @@ module pi_top_box_with_pegholes_and_cutouts() {
 
 module pi_top_box_complete() {
     difference() {
-        pi_top_box_with_pegholes_and_cutouts(); 
+        pi_top_box_with_ventilation(); 
 
         translate([-0.5*(PI_HOLE_CENTERS_LONG_AXIS-7),-0.5*(PI_HOLE_CENTERS_SHORT_AXIS-6),0.5]) {
             rotate([0,180,90]) {
@@ -112,21 +87,11 @@ module pi_top_box_complete() {
     }
 }
 
-module bme280_top_box_with_pegholes_and_cutouts() {
+///////////////////////////////////////////////////////////////////////////////
+
+module bme280_top_box_with_ventilation() {
     difference() {
-        bme280_top_box_with_pegholes();
-
-        translate([0.5*BME280_OUTER_LENGTH-(0.5*WALL_WIDTH),0,TOP_WALL_HEIGHT]) {
-            rotate([0,0,90]) {
-                cube([0.25*BME280_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*TOP_WALL_HEIGHT+0.2],center=true);
-            }
-        }
-
-        translate([-0.5*BME280_OUTER_LENGTH+(0.5*WALL_WIDTH),0,TOP_WALL_HEIGHT]) {
-            rotate([0,0,90]) {
-                cube([0.25*BME280_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*TOP_WALL_HEIGHT+0.2],center=true);
-            }
-        }
+        bme280_top_box_with_pegholes_and_cutouts(true);
 
         // Make some holes for ventilation
 
@@ -172,6 +137,8 @@ module bme280_top_box_with_pegholes_and_cutouts() {
     }
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 module top_box() {
     union() {
 
@@ -180,17 +147,19 @@ module top_box() {
         t = 0.5*PI_OUTER_LENGTH + 0.5*BME280_OUTER_WIDTH - WALL_WIDTH;
         translate([t,0,0]) {
             rotate([0,0,90]) {
-                bme280_top_box_with_pegholes_and_cutouts();
+                bme280_top_box_with_ventilation();
             }
         }
 
-        // Close the gap in the wall between the two...
-        translate([0.5*PI_OUTER_LENGTH,0.5*PI_OUTER_WIDTH-0.5*WALL_WIDTH,0.5*TOP_WALL_HEIGHT]) {
-            cube([10,WALL_WIDTH,TOP_WALL_HEIGHT],center=true);
+        // Close the gap in each wall with an extruded triangle
+        translate([0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH,0.5*PI_OUTER_WIDTH-2.25,0]) {
+            rotate([0,0,180]) {
+                triangle_prism(TOP_WALL_HEIGHT,4.5);
+            }
         }
-
-        translate([0.5*PI_OUTER_LENGTH,-(0.5*PI_OUTER_WIDTH-0.5*WALL_WIDTH),0.5*TOP_WALL_HEIGHT]) {
-            cube([10,WALL_WIDTH,TOP_WALL_HEIGHT],center=true);
+ 
+        translate([0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH,-0.5*(PI_OUTER_WIDTH-4.5),0]) {
+            triangle_prism(TOP_WALL_HEIGHT,4.5);
         }
     }
 }
@@ -201,8 +170,17 @@ module top_box_with_via() {
         top_box();
 
         // Internal via between the two boards
-        translate([0.5*PI_INNER_LENGTH+0.5*WALL_WIDTH,-0.15*PI_INNER_WIDTH,BOTTOM_WALL_HEIGHT]) {
-            cube([WALL_WIDTH+0.2,5.2,BOTTOM_WALL_HEIGHT+0.2],center=true);
+        translate([0.5*PI_INNER_LENGTH+0.5*WALL_WIDTH,-0.15*PI_INNER_WIDTH,TOP_WALL_HEIGHT]) {
+            cube([WALL_WIDTH+0.2,5.2,TOP_WALL_HEIGHT+0.2],center=true);
+        }
+
+        // Finally,  put a hole in each triangle for a screw
+        translate([0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH,0.5*PI_OUTER_WIDTH-3.25,0.5*TOP_WALL_HEIGHT]) {
+            cylinder(h=TOP_WALL_HEIGHT+WALL_WIDTH+0.2,r=1.1,center=true);
+        }
+         
+        translate([0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH,-0.5*(PI_OUTER_WIDTH-6),0.5*TOP_WALL_HEIGHT]) {
+            cylinder(h=TOP_WALL_HEIGHT+WALL_WIDTH+0.2,r=1.1,center=true);
         }
     }
 }

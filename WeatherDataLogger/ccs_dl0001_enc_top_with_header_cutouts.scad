@@ -24,35 +24,10 @@ $fa=1;
 $fs=0.4;
 
 
-module pi_top_box_with_pegholes_and_cutouts() {
+module pi_top_box_with_ventilation() {
     difference() {
-        pi_top_box_with_pegholes();
+        pi_top_box_with_pegholes_and_cutouts();
       
-        // SD card cutout 
-        translate([-(0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH),-0.05*PI_OUTER_WIDTH,TOP_WALL_HEIGHT]) {
-            rotate([0,0,90]) {
-                cube([0.35*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*TOP_WALL_HEIGHT+0.2],center=true);
-            }
-        }
-         
-        // Mini HDMI cutout 
-        hdmi_shift = 0.20*PI_OUTER_LENGTH;
-        translate([-(0.5*PI_OUTER_LENGTH-hdmi_shift+1),0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)+0.1,TOP_WALL_HEIGHT]) {
-            cube([0.40*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
-        }
-
-        // Micro USB 1 cutout 
-        usb1_shift = 0.20*PI_OUTER_LENGTH;
-        translate([0.5*PI_OUTER_LENGTH-usb1_shift,0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)+0.1,TOP_WALL_HEIGHT]) {
-            cube([0.30*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
-        }
-
-        // Micro USB 2 cutout 
-        usb2_shift = 0.40*PI_OUTER_LENGTH;
-        translate([0.5*PI_OUTER_LENGTH-usb2_shift,0.5*(PI_OUTER_WIDTH-0.05*PI_OUTER_WIDTH)+0.1,BOTTOM_WALL_HEIGHT]) {
-            cube([0.30*PI_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*BOTTOM_WALL_HEIGHT+0.2],center=true);
-        }
-
         // ventilation holes
         for (dx=[-(PI_INNER_LENGTH/2-3*VHOLE_RADIUS):2.5*VHOLE_RADIUS:PI_INNER_LENGTH/2-2*VHOLE_RADIUS]) {
             translate([dx,0,-VHOLE_OVERLAP]) {
@@ -92,7 +67,7 @@ module pi_top_box_with_pegholes_and_cutouts() {
 module pi_top_box_with_header_cutout() {
 
     difference() {
-        pi_top_box_with_pegholes_and_cutouts();
+        pi_top_box_with_ventilation();
 
         translate([0,-0.5*PI_HOLE_CENTERS_SHORT_AXIS,BOTTOM_WALL_HEIGHT-(0.5*BOTTOM_WALL_HEIGHT)]) {
             cube([PI_HOLE_CENTERS_LONG_AXIS-6,7,BOTTOM_WALL_HEIGHT+0.2],center=true); 
@@ -103,7 +78,6 @@ module pi_top_box_with_header_cutout() {
 module pi_top_box_complete() {
     difference() {
         pi_top_box_with_header_cutout();
-        // pi_top_box_with_pegholes_and_cutouts(); 
 
         translate([-0.5*(PI_HOLE_CENTERS_LONG_AXIS-7),-0.5*(PI_HOLE_CENTERS_SHORT_AXIS-6),0.5]) {
             rotate([0,180,90]) {
@@ -115,41 +89,23 @@ module pi_top_box_complete() {
     }
 }
 
-module bme280_top_box_with_pegholes_and_cutouts() {
+///////////////////////////////////////////////////////////////////////////////
+
+module bme280_top_box_with_ventilation() {
     difference() {
-        bme280_top_box_with_pegholes();
-
-        translate([0.5*BME280_OUTER_LENGTH-(0.5*WALL_WIDTH),0,TOP_WALL_HEIGHT]) {
-            rotate([0,0,90]) {
-                cube([0.25*BME280_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*TOP_WALL_HEIGHT+0.2],center=true);
-            }
-        }
-
-        translate([-0.5*BME280_OUTER_LENGTH+(0.5*WALL_WIDTH),0,TOP_WALL_HEIGHT]) {
-            rotate([0,0,90]) {
-                cube([0.25*BME280_OUTER_WIDTH,WALL_WIDTH+0.2,0.5*TOP_WALL_HEIGHT+0.2],center=true);
-            }
-        }
+        bme280_top_box_with_pegholes_and_cutouts(false);
 
         // Make some holes for ventilation
         for (dx=[-(BME280_INNER_LENGTH/2-5*VHOLE_RADIUS):2.5*VHOLE_RADIUS:BME280_INNER_LENGTH/2-5*VHOLE_RADIUS]) {
-            translate([dx,0,-VHOLE_OVERLAP]) {
+            translate([dx,-1,-VHOLE_OVERLAP]) {
                 rotate([0,0,30]) {
                     hexagonal_prism(VHOLE_HEIGHT,VHOLE_RADIUS);
                 }
             }
         }
 
-        for (dx=[-(BME280_INNER_LENGTH/2-6*VHOLE_RADIUS):2.5*VHOLE_RADIUS:BME280_INNER_LENGTH/2-6*VHOLE_RADIUS]) {
-            translate([dx,2*VHOLE_RADIUS,-VHOLE_OVERLAP]) {
-                rotate([0,0,-30]) {
-                    hexagonal_prism(VHOLE_HEIGHT,VHOLE_RADIUS);
-                }
-            }
-        }
-
-        for (dx=[-(BME280_INNER_LENGTH/2-6*VHOLE_RADIUS):2.5*VHOLE_RADIUS:BME280_INNER_LENGTH/2-6*VHOLE_RADIUS]) {
-            translate([dx,-2*VHOLE_RADIUS,-VHOLE_OVERLAP]) {
+        for (dx=[-(BME280_INNER_LENGTH/2-6*VHOLE_RADIUS):2.5*VHOLE_RADIUS:BME280_INNER_LENGTH/2-4*VHOLE_RADIUS]) {
+            translate([dx,2*VHOLE_RADIUS-1,-VHOLE_OVERLAP]) {
                 rotate([0,0,-30]) {
                     hexagonal_prism(VHOLE_HEIGHT,VHOLE_RADIUS);
                 }
@@ -161,13 +117,15 @@ module bme280_top_box_with_pegholes_and_cutouts() {
 module bme280_top_box_with_header_cutout() {
 
     difference() {
-        bme280_top_box_with_pegholes_and_cutouts();
+        bme280_top_box_with_ventilation();
 
         translate([0,-0.5*BME280_HOLE_CENTERS_SHORT_AXIS-1,BOTTOM_WALL_HEIGHT-(0.5*BOTTOM_WALL_HEIGHT)]) {
-            cube([BME280_HOLE_CENTERS_LONG_AXIS-4.5,4,BOTTOM_WALL_HEIGHT+0.2],center=true); 
+            cube([BME280_HOLE_CENTERS_LONG_AXIS-1.0,4,BOTTOM_WALL_HEIGHT+0.2],center=true); 
         }
     }
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 module top_box() {
     union() {
@@ -181,19 +139,35 @@ module top_box() {
             }
         }
 
-        // Close the gap in the wall between the two...
-        translate([0.5*PI_OUTER_LENGTH,0.5*PI_OUTER_WIDTH-0.5*WALL_WIDTH,0.5*TOP_WALL_HEIGHT]) {
-            cube([10,WALL_WIDTH,TOP_WALL_HEIGHT],center=true);
+        // Close the gap in each wall with an extruded triangle
+        translate([0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH,0.5*PI_OUTER_WIDTH-2.25,0]) {
+            rotate([0,0,180]) {
+                triangle_prism(TOP_WALL_HEIGHT,4.5);
+            }
         }
-
-        translate([0.5*PI_OUTER_LENGTH,-(0.5*PI_OUTER_WIDTH-0.5*WALL_WIDTH),0.5*TOP_WALL_HEIGHT]) {
-            cube([10,WALL_WIDTH,TOP_WALL_HEIGHT],center=true);
+ 
+        translate([0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH,-0.5*(PI_OUTER_WIDTH-4.5),0]) {
+            triangle_prism(TOP_WALL_HEIGHT,4.5);
         }
     }
 }
 
 
+module top_box_with_screw_holes() {
+    difference() {
+        top_box();
 
-top_box();
+        // Finally,  put a hole in each triangle for a screw
+        translate([0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH,0.5*PI_OUTER_WIDTH-3.25,0.5*TOP_WALL_HEIGHT]) {
+            cylinder(h=TOP_WALL_HEIGHT+WALL_WIDTH+0.2,r=1.1,center=true);
+        }
+         
+        translate([0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH,-0.5*(PI_OUTER_WIDTH-6),0.5*TOP_WALL_HEIGHT]) {
+            cylinder(h=TOP_WALL_HEIGHT+WALL_WIDTH+0.2,r=1.1,center=true);
+        }
+    }
+}
+
+top_box_with_screw_holes();
 
 

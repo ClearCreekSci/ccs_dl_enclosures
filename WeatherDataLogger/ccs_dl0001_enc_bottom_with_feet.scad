@@ -47,13 +47,15 @@ module bottom_box() {
             }
         }
 
-        // Close the gap in the wall between the two...
-        translate([0.5*PI_OUTER_LENGTH,0.5*PI_OUTER_WIDTH-0.5*WALL_WIDTH,0.5*BOTTOM_WALL_HEIGHT]) {
-            cube([10,WALL_WIDTH,BOTTOM_WALL_HEIGHT],center=true);
+        // Close the gap in each wall with an extruded triangle
+        translate([0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH,0.5*PI_OUTER_WIDTH-2.25,0]) {
+            rotate([0,0,180]) {
+                triangle_prism(BOTTOM_WALL_HEIGHT,4.5);
+            }
         }
 
-        translate([0.5*PI_OUTER_LENGTH,-(0.5*PI_OUTER_WIDTH-0.5*WALL_WIDTH),0.5*BOTTOM_WALL_HEIGHT]) {
-            cube([10,WALL_WIDTH,BOTTOM_WALL_HEIGHT],center=true);
+        translate([0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH,-0.5*(PI_OUTER_WIDTH-4.5),0]) {
+            triangle_prism(BOTTOM_WALL_HEIGHT,4.5);
         }
     }
 }
@@ -88,6 +90,21 @@ module bottom_box_with_feet() {
     }
 }
 
-bottom_box_with_feet();
+module bottom_box_with_feet_and_screw_holes() {
+    difference() {
+        bottom_box_with_feet();
+
+        // Finally,  put a hole in each triangle for a screw
+        translate([0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH,0.5*PI_OUTER_WIDTH-2.5,0.5*BOTTOM_WALL_HEIGHT]) {
+            cylinder(h=BOTTOM_WALL_HEIGHT+WALL_WIDTH+0.2,r=1.1,center=true);
+        }
+         
+        translate([0.5*PI_OUTER_LENGTH-0.5*WALL_WIDTH,-0.5*(PI_OUTER_WIDTH-5.75),0.5*BOTTOM_WALL_HEIGHT]) {
+            cylinder(h=BOTTOM_WALL_HEIGHT+WALL_WIDTH+0.2,r=1.1,center=true);
+        }
+    }
+}
+
+bottom_box_with_feet_and_screw_holes();
 
 
